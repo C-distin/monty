@@ -1,66 +1,50 @@
 #include "monty.h"
 
 /**
- * _parsing - function that parses the input
- * @line: line of the file
- * @cmd: command
+ * parse_line - parses a line of code
+ * @token: the token to parse
+ * @stack: the stack to use
+ * @line_number: the line number
+ *
  * Return: void
  */
-void _parsing(char *line, cmd_t *cmd)
+void parse_line(char *token, stack_t **stack, unsigned int line_number)
 {
-	char *token;
-	char *delim = " \t\n\r";
-	char *arg;
-	int size;
-	unsigned int line_num = cmd->line_number;
+	int i = 0;
 
-	if (line == NULL)
-		return;
-	
-	token = strtok(line, delim);
+	instruction_t op_list[] = {
+		{"push", op_push},
+		{"pall", op_pall},
+		{"pint", op_pint},
+		{"pop", op_pop},
+		{"swap", op_swap},
+		{"add", op_add},
+		{"nop", op_nop},
+		{"sub", op_sub},
+		{"div", op_div},
+		{"mul", op_mul},
+		{"mod", op_mod},
+		{"pchar", op_pchar},
+		{"pstr", op_pstr},
+		{"rotl", op_rotl},
+		{"rotr", op_rotr},
+		{NULL, NULL}
+	};
 
-	if (token == NULL || token[0] == '#')
-		return;
-
-	if (strcmp(token, "stack") == 0)
+	while (op_list[i].opcode != NULL)
 	{
-		*cmd->mode = 0;
-		return (0);
-	}
-
-	if (strcmp(token, "queue") == 0)
-	{
-		*cmd->mode = 1;
-		return (0);
-	}
-
-	if (strcmp(token, "push") == 0)
-	{
-		arg = strtok(NULL, delim);
-		if (arg == NULL)
+		if (strcmp(op_list[i].opcode, token) == 0)
 		{
-			fprintf(stderr, "L%d: usage: push integer\n", line_num);
-			exit(EXIT_FAILURE);
+			op_list[i].f(stack, line_number);
+			return;
 		}
-
-		size = strlen(arg);
-
-		while (size--)
-		{
-			if (size == 0 && arg[size] == '-')
-			{
-				fprintf(stderr, "L%d: usage: push integer\n", line_num);
-				exit(EXIT_FAILURE);
-			}
-		}
-
-		cmd->arg = atoi(arg);
-		cmd->token = token;
-
-		return (1);
+		i++;
 	}
 
-	cmd->token = token;
+	line_number++;
+	fprintf(stderr, "L%u: unknown instruction %s\n", line_number, token);
+	free_stack(stack, line_number);
 
-	return (1);
+	exit(EXIT_FAILURE);
+
 }

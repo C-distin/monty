@@ -48,62 +48,42 @@ typedef struct instruction_s
 
 extern stack_t *head;
 extern stack_t *tail;
+extern globals;
 
-/**
- * cmd_s - struct for commands
- * @cmd: command
- * @arg: argument
- * @fd: file descriptor
- * @mode: mode
- * @line_number: line number
- * 
- */
-typedef struct cmd_s
-{
-        char *token;
-        char *arg;
-        int fd;
-        int *mode;
-        unsigned int line_number;
-        stack_t *head;
-        stack_t *tail;
-        struct cmd_s *next;
-} cmd_t;
+/* parse operations */
+void parse_line(char *token, stack_t **stack, unsigned int line_number);
 
-/**
- * struct instruction_s - token code and its function
- * @token_code: the token code
- * @f: function to handle the token code
- */
-typedef struct instruction_s
-{
-        char *token_code;
-        void (*f)(stack_t **stack, unsigned int line_number);
-} instruction_t;
+/* make operations */
+void make_token(char *input, stack_t **stck, unsigned int line_number);
 
-void eval(char *line, stack_t **h, stack_t **t, int *mode, unsigned int line_number);
-int parse(char *line, cmd_t *cmd);
-void run(cmd_t *cmd);
-void push(cmd_t *cmd);
-void pall(cmd_t *cmd);
-void pint(cmd_t *cmd);
-void pop(cmd_t *cmd);
-void swap(cmd_t *cmd);
-void add(cmd_t *cmd);
-void nop(cmd_t *cmd);
-void sub(cmd_t *cmd);
-void divide(cmd_t *cmd);
-void mul(cmd_t *cmd);
-void mod(cmd_t *cmd);
-void pchar(cmd_t *cmd);
-void pstr(cmd_t *cmd);
-void rotl(cmd_t *cmd);
-void rotr(cmd_t *cmd);
-void free_list(stack_t **head);
-void stack_mode(cmd_t *cmd);
-void queue_mode(cmd_t *cmd);
-void free_cmd(cmd_t *cmd);
-void free_stack(stack_t **head);
-void handle_error(int error_code, unsigned int line_number);
+/* Stack calculation functions */
+void op_mod(stack_t **stack, unsigned int line_number);
+void op_mul(stack_t **stack, unsigned int line_number);
+void op_div(stack_t **stack, unsigned int line_number);
+void op_sub(stack_t **stack, unsigned int line_number);
+void op_add(stack_t **stack, unsigned int line_number);
+
+/* Stack manipulation functions */
+void op_push(stack_t **stack, unsigned int line_number);
+void op_pop(stack_t **stack, unsigned int line_number);
+void op_swap(stack_t **stack, unsigned int line_number);
+void op_rotl(stack_t **stack, unsigned int line_number);
+void op_rotr(stack_t **stack, unsigned int line_number);
+
+/* Stack printing functions */
+void op_pall(stack_t **stack, unsigned int line_number);
+void op_pint(stack_t **stack, unsigned int line_number);
+void op_pchar(stack_t **stack, unsigned int line_number);
+void op_pstr(stack_t **stack);
+void op_nop(stack_t **stack, unsigned int line_number, stack_t *h, int c);
+
+/* Evaluate operations */
+void evaluate_operation(stack_t **stack, unsigned int line_number, int mode, char *opcode);
+
+/* free double linked list */
+void free_dlist(stack_t *head);
+
+/*free stack */
+void free_stack(stack_t **stack, unsigned int line_number);
 
 #endif /* _MONTY_H_ */

@@ -1,19 +1,29 @@
 #include "monty.h"
 
 /**
- * monty_stack - function that prints the stack
- * @cmd: command
+ * stack_mode - change to LIFO mode
+ * @stack: stack
+ * @line_number: line number
+ *
+ * Return: void
  */
-void monty_stack(cmd_t *cmd)
+void stack_mode(stack_t **stack, unsigned int line_number)
 {
-	*cmd->mode = 0;
+	(void)stack;
+	(void)line_number;
+	global_mode = LIFO;
 }
 
 /**
- * monty_queue - function that prints the queue
- * @cmd: command
+ * queue_mode - change to FIFO mode
+ * @stack: stack
+ * @line_number: line number
+ * 
+ * Return: void 
  */
-void monty_queue(cmd_t *cmd)
+void queue_mode(stack_t **stack, unsigned int line_number)
 {
-	*cmd->mode = 1;
+	(void)stack;
+	(void)line_number;
+	global_mode = FIFO;
 }

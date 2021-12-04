@@ -1,22 +1,51 @@
 #include "monty.h"
 
 /**
- * eval - Evaluates the operation
- * @line: The line of the file
- * @h: head of doubly linked list
- * @t: tail of doubly linked list
- * @mode: mode of operation
- * @line_number: line number
+ * evaluate_operation - Evaluates operation given commandline input, stack/queue mode, and line number of file
+ * @stack: Stack/queue to be evaluated
+ * @line_number: Line number of file
+ * @mode: Mode of stack/queue
+ * @opcode: Operation to be evaluated
+ *
+ * Return: Nothing
  */
-void eval(char *line, stack_t **h, stack_t **t, int mode, int line_number)
+void evaluate_operation(stack_t **stack, unsigned int line_number, int mode, char *opcode)
 {
-	cmd_t *cmd;
+	int (*f)(stack_t **, unsigned int, int);
 
-	cmd->mode = mode;
-	cmd->line_number = line_number;
-	cmd->head = h;
-	cmd->tail = t;
-
-	if (parse(line, &cmd) == 1)
-		run(&cmd);
+	f = NULL;
+	if (strcmp(opcode, "push") == 0)
+		f = push;
+	else if (strcmp(opcode, "pall") == 0)
+		f = pall;
+	else if (strcmp(opcode, "pint") == 0)
+		f = pint;
+	else if (strcmp(opcode, "pop") == 0)
+		f = pop;
+	else if (strcmp(opcode, "swap") == 0)
+		f = swap;
+	else if (strcmp(opcode, "add") == 0)
+		f = add;
+	else if (strcmp(opcode, "nop") == 0)
+		f = nop;
+	else if (strcmp(opcode, "sub") == 0)
+		f = sub;
+	else if (strcmp(opcode, "div") == 0)
+		f = divide;
+	else if (strcmp(opcode, "mul") == 0)
+		f = mul;
+	else if (strcmp(opcode, "mod") == 0)
+		f = mod;
+	else if (strcmp(opcode, "pchar") == 0)
+		f = pchar;
+	else if (strcmp(opcode, "pstr") == 0)
+		f = pstr;
+	else if (strcmp(opcode, "rotl") == 0)
+		f = rotl;
+	else if (strcmp(opcode, "rotr") == 0)
+		f = rotr;
+	else if (strcmp(opcode, "stack") == 0)
+		f = stack_mode;
+	else if (strcmp(opcode, "queue") == 0)
+		f = queue_mode;
 }
