@@ -15,37 +15,46 @@ void evaluate_operation(stack_t **stack, unsigned int line_number, int mode, cha
 
 	f = NULL;
 	if (strcmp(opcode, "push") == 0)
-		f = push;
+		f = op_push;
 	else if (strcmp(opcode, "pall") == 0)
-		f = pall;
+		f = op_pall;
 	else if (strcmp(opcode, "pint") == 0)
-		f = pint;
+		f = op_pint;
 	else if (strcmp(opcode, "pop") == 0)
-		f = pop;
+		f = op_pop;
 	else if (strcmp(opcode, "swap") == 0)
-		f = swap;
+		f = op_swap;
 	else if (strcmp(opcode, "add") == 0)
-		f = add;
+		f = op_add;
 	else if (strcmp(opcode, "nop") == 0)
-		f = nop;
+		f = op_nop;
 	else if (strcmp(opcode, "sub") == 0)
-		f = sub;
+		f = op_sub;
 	else if (strcmp(opcode, "div") == 0)
-		f = divide;
+		f = op_div;
 	else if (strcmp(opcode, "mul") == 0)
-		f = mul;
+		f = op_mul;
 	else if (strcmp(opcode, "mod") == 0)
-		f = mod;
+		f = op_mod;
 	else if (strcmp(opcode, "pchar") == 0)
-		f = pchar;
+		f = op_pchar;
 	else if (strcmp(opcode, "pstr") == 0)
-		f = pstr;
+		f = op_pstr;
 	else if (strcmp(opcode, "rotl") == 0)
-		f = rotl;
+		f = op_rotl;
 	else if (strcmp(opcode, "rotr") == 0)
-		f = rotr;
+		f = op_rotr;
 	else if (strcmp(opcode, "stack") == 0)
-		f = stack_mode;
+		f = op_stack;
 	else if (strcmp(opcode, "queue") == 0)
-		f = queue_mode;
+		f = op_queue;
+
+	if (f == NULL)
+	{
+		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
+		exit(EXIT_FAILURE);
+	}
+	f(stack, line_number, mode);
+
+	return;
 }

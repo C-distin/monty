@@ -1,29 +1,63 @@
 #include "monty.h"
 
 /**
- * stack_mode - change to LIFO mode
- * @stack: stack
+ * op_stack - pushes an element to the stack
+ * @stack: pointer to the top of the stack
  * @line_number: line number
  *
- * Return: void
+ * Return: nothing 
  */
-void stack_mode(stack_t **stack, unsigned int line_number)
+void op_stack(stack_t **stack, unsigned int line_number)
 {
-	(void)stack;
+	stack_t *new_node;
+
 	(void)line_number;
-	global_mode = LIFO;
+	if (stack == NULL || *stack == NULL)
+	{
+		fprintf(stderr, "L%d: can't peek, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	new_node = malloc(sizeof(stack_t));
+	if (new_node == NULL)
+	{
+		fprintf(stderr, "L%d: can't malloc\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	new_node->n = (*stack)->n;
+	new_node->next = *stack;
+	*stack = new_node;
 }
 
 /**
- * queue_mode - change to FIFO mode
- * @stack: stack
+ * op_queue - pushes an element to the queue
+ * @stack: pointer to the top of the stack
  * @line_number: line number
- * 
- * Return: void 
+ *
+ * Return: nothing
  */
-void queue_mode(stack_t **stack, unsigned int line_number)
+void op_queue(stack_t **stack, unsigned int line_number)
 {
-	(void)stack;
+	stack_t *new_node;
+
 	(void)line_number;
-	global_mode = FIFO;
+	if (stack == NULL || *stack == NULL)
+	{
+		fprintf(stderr, "L%d: can't peek, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	new_node = malloc(sizeof(stack_t));
+	if (new_node == NULL)
+	{
+		fprintf(stderr, "L%d: can't malloc\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	new_node->n = (*stack)->n;
+	new_node->next = NULL;
+	if (*stack == NULL)
+	{
+		*stack = new_node;
+		return;
+	}
+	new_node->next = (*stack)->next;
+	(*stack)->next = new_node;
 }

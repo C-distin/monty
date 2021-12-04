@@ -55,6 +55,7 @@ void parse_line(char *token, stack_t **stack, unsigned int line_number);
 
 /* make operations */
 void make_token(char *input, stack_t **stck, unsigned int line_number);
+int bool_num(char *token);
 
 /* Stack calculation functions */
 void op_mod(stack_t **stack, unsigned int line_number);
@@ -74,8 +75,12 @@ void op_rotr(stack_t **stack, unsigned int line_number);
 void op_pall(stack_t **stack, unsigned int line_number);
 void op_pint(stack_t **stack, unsigned int line_number);
 void op_pchar(stack_t **stack, unsigned int line_number);
-void op_pstr(stack_t **stack);
+void op_pstr(stack_t **stack, unsigned int line_number);
 void op_nop(stack_t **stack, unsigned int line_number, stack_t *h, int c);
+
+/* Data manipulation functions */
+void op_stack(stack_t **stack, unsigned int line_number);
+void op_queue(stack_t **stack, unsigned int line_number);
 
 /* Evaluate operations */
 void evaluate_operation(stack_t **stack, unsigned int line_number, int mode, char *opcode);

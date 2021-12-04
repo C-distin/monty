@@ -68,19 +68,22 @@ void op_phcar(stack_t **stack, unsigned int line_number, stack_t *h, int c, int 
 /**
  * op_pstr - prints the string at the top of the stack
  * @stack: stack
+ * @line_number: line number
  *
  * Return: void
  */
-void op_pstr(stack_t **stack)
+void op_pstr(stack_t **stack, unsigned int line_number)
 {
 	stack_t *temp;
 
-	temp = *stack;
-	while (temp != NULL)
+	(void)line_number;
+	if (*stack == NULL)
 	{
-		printf("%s\n", temp->str);
-		temp = temp->next;
+		fprintf(stderr, "L%d: can't pstr, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
 	}
+	temp = *stack;
+	printf("%s\n", temp->str);
 }
 
 /**
